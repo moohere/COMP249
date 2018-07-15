@@ -134,6 +134,7 @@ public class Customer {
 	public static void main (String[] args) {
 		Scanner input = new Scanner(System.in);
 		final String PASSWORD = "password";
+		int attempts = 0;
 		
 		System.out.println("--------------------------------------------------------------");
 		System.out.println("--------- Welcome to the Customer Management Program ---------");
@@ -168,7 +169,7 @@ public class Customer {
 			switch (choice) {
 			case 1: 
 				// Keeps track of the # of outer loops attempted for the password
-				int attempts = 0;
+				boolean pwdConfirmed = false;
 				while (attempts < 4) {
 					System.out.print("Please enter your password: ");
 					String password = input.next();
@@ -180,67 +181,53 @@ public class Customer {
 						password = input.next();
 					}
 					System.out.println();
-					// Breaks loop if password is entered correctly
-					if (password.equals(PASSWORD))
-						break;
-					
 					attempts++;
-					if (passwordCount == 3 && attempts < 4) {
-						System.out.println("What do you want to do?");
-						System.out.println("\t1. Enter new customer (password required)");
-						System.out.println("\t2. Change information of a customer (password required)");
-						System.out.println("\t3. Display all customers residing on the street name");
-						System.out.println("\t4. Display all customers residing in the same city");
-						System.out.println("\t5. Quit");
-						System.out.print("Please enter your choice > ");
-						choice = input.nextInt();
-						
-						while (choice < 1 || choice > 5) {
-							System.out.print("Please enter a valid choice > ");
-							choice = input.nextInt();
-						}
-					}
-					// Allows user to exit program even within the 4 attempt loop
-					if (choice == 5) {
-						System.out.println("\nThanks for using the Customer Management Program. Good bye.");
-						end = true;
+
+					// Exits the program if the outer loop was executed 4 times and the user still failed to provide the correct password
+					if (attempts == 4) {
+						System.out.println("Program detected suspicious activities and will terminate immediately.");
 						System.exit(0);
 					}
-				}
-				// Exits the program if the outer loop was executed 4 times and the user still failed to provide the correct password
-				if (attempts == 4) {
-					System.out.println("Program detected suspicious activities and will terminate immediately.");
-					System.exit(0);
-				}
-				
-				// Once password is correctly entered, proceeds to prompt user for the # of customers to enter
-				System.out.print("How many customers do you want to enter? ");
-				int customerNumber = input.nextInt();
-				input.nextLine();
-				// Ensures that the requested number is possible, otherwise tells user how many customers may still be added
-				if (capacity - Customer.findNumberOfCreatedCustomers() - customerNumber >= 0) {
-					int index = Customer.findNumberOfCreatedCustomers();
-					// Adds customer to database (i.e. the array)
-					for(int i = 0; i < customerNumber; i++) {
-						System.out.print("Name: ");
-						String name = input.nextLine();
-						System.out.print("Street number: ");
-						int streetNumber = input.nextInt();
-						input.nextLine();
-						System.out.print("Street name: ");
-						String streetName = input.nextLine();
-						System.out.print("City: ");
-						String city = input.nextLine();
-						userDatabase[index + i] = new Customer(name, streetNumber, streetName, city);
+					choice = 0;
+					// Breaks loop if password is entered correctly or if the choice is no longer 1
+					if (password.equals(PASSWORD)) {
+						pwdConfirmed = true;
+						break;
+					} else if (choice != 1) {
+						break;
 					}
-				} else {
-					System.out.println("You may only add " + (capacity - Customer.findNumberOfCreatedCustomers()) + " customers.\n");
-					break;
 				}
 				
-				// Prints customers information once added
-				for (int i = 0; i < Customer.findNumberOfCreatedCustomers(); i++) {
-					System.out.println(userDatabase[i] +"\n");
+				if (pwdConfirmed == true) {
+					// Once password is correctly entered, proceeds to prompt user for the # of customers to enter
+					System.out.print("How many customers do you want to enter? ");
+					int customerNumber = input.nextInt();
+					input.nextLine();
+					// Ensures that the requested number is possible, otherwise tells user how many customers may still be added
+					if (capacity - Customer.findNumberOfCreatedCustomers() - customerNumber >= 0) {
+						int index = Customer.findNumberOfCreatedCustomers();
+						// Adds customer to database (i.e. the array)
+						for(int i = 0; i < customerNumber; i++) {
+							System.out.print("Name: ");
+							String name = input.nextLine();
+							System.out.print("Street number: ");
+							int streetNumber = input.nextInt();
+							input.nextLine();
+							System.out.print("Street name: ");
+							String streetName = input.nextLine();
+							System.out.print("City: ");
+							String city = input.nextLine();
+							userDatabase[index + i] = new Customer(name, streetNumber, streetName, city);
+						}
+					} else {
+						System.out.println("You may only add " + (capacity - Customer.findNumberOfCreatedCustomers()) + " customers.\n");
+						break;
+					}
+					
+					// Prints customers information once added
+					for (int i = 0; i < Customer.findNumberOfCreatedCustomers(); i++) {
+						System.out.println(userDatabase[i] +"\n");
+					}
 				}
 				break;
 			case 2:
