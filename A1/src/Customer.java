@@ -2,19 +2,18 @@
 // Assignment 1
 // Written by: Muherthan Thalayasingam - 27223064
 // ----------------------------------------------------- 
-
+import java.util.Scanner;
 /** 
  * @author Muherthan Thalayasingam - 27223064
- * COMP249
- * Assignment #1
- * Due 15/07/18
+ * <p>
+ * COMP249 <p>
+ * Assignment #1 <p>
+ * Due 15/07/18 <p>
  * The program acts a a simple customer database management system. It first prompts the user for how many customers will be in the
  * database, then allows the user to add and modify customers as well as search for queries based on customer's information.
- */
-
-import java.util.Scanner;
-
-/** A customer name, street number, street name, and city. */
+ * <p>
+ * A customer name, street number, street name, and city. 
+ * */
 public class Customer {
 	private String name;
 	private int streetNumber;
@@ -123,7 +122,7 @@ public class Customer {
 	 * @return boolean value based on equality of streetName and city
 	 */
 	public boolean equals(Customer a) {
-		return this.streetName == a.streetName && this.city == a.city;
+		return this.streetName.equals(a.streetName) && this.city.equals(a.city);
 	}
 	
 	
@@ -136,9 +135,9 @@ public class Customer {
 		final String PASSWORD = "password";
 		int attempts = 0;
 		
-		System.out.println("--------------------------------------------------------------");
-		System.out.println("--------- Welcome to the Customer Management Program ---------");
-		System.out.println("--------------------------------------------------------------\n");
+		System.out.println("--------------------------------------------------------------------");
+		System.out.println("--------- Welcome to the Muher Customer Management Program ---------");
+		System.out.println("--------------------------------------------------------------------\n");
 		System.out.print("What is the maximum number of customers the company can handle? ");
 		
 		// Prompts user for the capacity for the database and then creates the database for the appropriate size
